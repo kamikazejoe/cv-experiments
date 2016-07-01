@@ -3,7 +3,7 @@ const fs      = require('fs');
 const request = require('request');
 const Promise = require('bluebird');
 
-var scraper = new Scraper.Bing();
+var scraper = new Scraper.Google();
 
 scraper.list({
 	keyword: 'guy fawkes mask',
@@ -14,7 +14,7 @@ scraper.list({
 	return new Promise((resolve, reject) => {
 		const match      = /^.*\/(.*)$/.exec(url);
 		const filename   = match[1];
-		const outputFile = fs.createWriteStream('./guyImages/'+filename);
+		const outputFile = fs.createWriteStream('./imgs/guy-fawkes/'+filename);
 		
 		const req = request(url)
 
@@ -26,5 +26,6 @@ scraper.list({
 
 		req.pipe(outputFile);
 	})
-	.then(() => console.log('file downloaded'));
+	.then(() => console.log('file downloaded: '+url))
+	.catch(() => console.error('error downloading: '+url));
 }, {concurrency: 10})

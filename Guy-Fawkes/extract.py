@@ -35,15 +35,15 @@ def findFaces(imgs, outDir):
             for (x, y, w, h) in faces:
                 print('saving face %d from image %s' % (faceIndex, imgPath))
                 faceFilename = outDir+('/face_%04d.png' % faceIndex)
-                face = img[y:y+h, x:x+w]
-                face = cv2.resize(face, (64, 64))
+                face = gray[y:y+h, x:x+w]
+                face = cv2.resize(face, (128, 128))
                 imsave(faceFilename, face)
                 faceIndex += 1
 
         except:
             print('Error: ', sys.exc_info())
 
-        if faceIndex >= 1000:
+        if faceIndex >= 500:
             break
 
 findFaces(guyImgs,   guyFacePath);

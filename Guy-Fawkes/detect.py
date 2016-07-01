@@ -7,6 +7,7 @@ faceCascade = cv2.CascadeClassifier(cascPath)
 
 video_capture = cv2.VideoCapture(0)
 
+facePca   = pickle.load(open('pca.pickle',   'rb'))
 faceModel = pickle.load(open('model.pickle', 'rb'))
 
 while True:
@@ -23,12 +24,12 @@ while True:
 
     for (x, y, w, h) in faces:
         face = gray[y:y+h, x:x+w]
-        face = cv2.resize(face, (64, 64))
-        result = faceModel.predict([face.reshape((-1))])
+        face = cv2.resize(face, (128, 128))
+        result = faceModel.predict(facePca.transform([face.reshape((-1))]))
 
         print(result)
 
-        if result == 1:
+        if result[0] == 1:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
         else:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
